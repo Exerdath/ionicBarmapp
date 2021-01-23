@@ -7,7 +7,6 @@ import {
   IonTitle,
   IonContent,
   IonInput,
-  IonTextarea,
   IonFooter,
   IonItem,
   IonList,
@@ -17,20 +16,32 @@ import {
 } from "@ionic/react";
 import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
+import {
+  useDrinksContext,
+  useDrinksActions,
+  loginUser,
+} from "../../context/wrappers/DrinksWrapper";
 
 const Login: React.FC = () => {
-  const [name, setName] = useState<string>();
-  const [email, setEmail] = useState<string>();
-  const [message, setMessage] = useState<string>();
+  const { user } = useDrinksContext();
+  const dispatch = useDrinksActions();
+  const [contextUser, setContextUser] = useState(user);
   const [messageAlert, showMessageAlert] = useState<boolean>(false);
   let history = useHistory();
 
-  const doLogin = () => {
-    if (!name || !email || !message) {
+  const handleLogin = (event: any) => {
+    event.preventDefault();
+    if (contextUser.email === "" || contextUser.password === "") {
       showMessageAlert(true);
     } else {
-      console.log(name, email, message);
-      history.push("/home");
+      console.log(user.email, user.password);
+      loginUser(
+        dispatch,
+        contextUser.email === undefined ? "" : contextUser.email,
+        contextUser.password === undefined ? "" : contextUser.password
+      )
+        .then(() => history.push("/home"))
+        .catch(() => console.log("Nope, Login failed"));
     }
   };
 
@@ -51,30 +62,41 @@ const Login: React.FC = () => {
           onDidDismiss={() => showMessageAlert(false)}
           header={"Can not do that"}
           subHeader={"A little problem"}
-          message={"Name, Email, or Message cannot be empty!"}
+          message={"Email,password cannot be empty!"}
           buttons={["OK"]}
         />
         <IonList>
           <IonItem>
             <IonInput
-              value={name}
+              value={contextUser.email}
               placeholder="Email"
-              onIonChange={(e) => setName(e.detail.value!)}
+              onIonChange={(e) => {
+                setContextUser({
+                  ...contextUser,
+                  email: e.detail.value === null ? "" : e.detail.value,
+                });
+              }}
             ></IonInput>
           </IonItem>
           <IonItemDivider></IonItemDivider>
           <IonItem>
             <IonInput
-              value={email}
+              value={contextUser.password}
               placeholder="Password"
-              onIonChange={(e) => setEmail(e.detail.value!)}
+              type="password"
+              onIonChange={(e) => {
+                setContextUser({
+                  ...contextUser,
+                  password: e.detail.value === null ? "" : e.detail.value,
+                });
+              }}
             ></IonInput>
           </IonItem>
           <IonItemDivider></IonItemDivider>
           <IonItem
             button
             onClick={(e) => {
-              doLogin();
+              handleLogin(e);
             }}
           >
             <IonLabel class="ion-text-center">Login to Barmapp</IonLabel>

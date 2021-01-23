@@ -6,7 +6,7 @@ import {
   IonLabel,
   IonImg,
 } from "@ionic/react";
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import {
   useDrinksActions,
   useDrinksContext,
@@ -30,21 +30,23 @@ const DrinksList: React.FC<IDrinkList> = ({ drinkIngredient }: IDrinkList) => {
   }, [drinkIngredient, loadDrinksByIngredient]);
 
   const currentListing = drinks.map((drinks: any) => (
-    <IonItem
-      key={drinks.idDrink}
-      button
-      routerLink={"/drinkdetails" + drinks.path}
-      onClick={() => {
-        loadDrinkById(dispatch, drinks.idDrink);
-      }}
-    >
-      <IonAvatar slot="start">
-        <IonImg src={drinks.strDrinkThumb} />
-      </IonAvatar>
-      <IonLabel>
-        <h2>{drinks.strDrink}</h2>
-      </IonLabel>
-    </IonItem>
+    <>
+      <IonItem
+        key={drinks.idDrink}
+        button
+        routerLink={"/drinkdetails" + drinks.path}
+        onClick={() => {
+          loadDrinkById(dispatch, drinks.idDrink);
+        }}
+      >
+        <IonAvatar slot="start">
+          <IonImg src={drinks.strDrinkThumb} />
+        </IonAvatar>
+        <IonLabel>
+          <h2>{drinks.strDrink}</h2>
+        </IonLabel>
+      </IonItem>
+    </>
   ));
 
   return (

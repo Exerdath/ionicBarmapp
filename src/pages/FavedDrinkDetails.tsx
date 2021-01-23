@@ -9,13 +9,8 @@ import {
   IonLabel,
   IonCardSubtitle,
   IonItem,
-  IonButton,
-  IonGrid,
-  IonRow,
-  IonCol,
-  IonToast,
 } from "@ionic/react";
-import React, { useState } from "react";
+import React from "react";
 import BarHeader from "../components/common/BarHeader";
 import "./DrinkDetails.css";
 import IngredientsList from "../components/IngredientsList";
@@ -25,8 +20,7 @@ import {
   faveDrink,
 } from "../context/wrappers/DrinksWrapper";
 
-const DrinkDetails: React.FC = () => {
-  const [showToast1, setShowToast1] = useState(false);
+const FavedDrinkDetails: React.FC = () => {
   const { user, selectedDrink } = useDrinksContext();
   const dispatch = useDrinksActions();
   function handleFaveDrink(event: any) {
@@ -61,33 +55,9 @@ const DrinkDetails: React.FC = () => {
             </IonItem>
           </IonCardContent>
         </IonCard>
-        <IonGrid>
-          <IonRow>
-            <IonCol size="3" />
-            <IonCol>
-              <IonButton
-                size="small"
-                expand="block"
-                onClick={(event) => {
-                  handleFaveDrink(event);
-                  setShowToast1(true);
-                }}
-              >
-                Add To Favourites
-              </IonButton>
-            </IonCol>
-            <IonCol size="3" />
-          </IonRow>
-        </IonGrid>
-        <IonToast
-          isOpen={showToast1}
-          onDidDismiss={() => setShowToast1(false)}
-          message="Drink Added"
-          duration={700}
-        />
       </IonContent>
     </IonPage>
   );
 };
 
-export default DrinkDetails;
+export default FavedDrinkDetails;

@@ -6,7 +6,7 @@ import {
   IonLabel,
   IonImg,
 } from "@ionic/react";
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import {
   useDrinksActions,
   useDrinksContext,
@@ -15,20 +15,18 @@ import {
 } from "../context/wrappers/DrinksWrapper";
 
 const FavedDrinksList: React.FC = () => {
-  const { usersDrinks, selectedDrink } = useDrinksContext();
+  const { user, usersDrinks } = useDrinksContext();
   const dispatch = useDrinksActions();
 
   useEffect(() => {
-    if (usersDrinks.length === 0) {
-      loadDrinksByUserId(dispatch, 6);
-    }
-  }, [usersDrinks]);
+    loadDrinksByUserId(dispatch, user.userId === undefined ? 6 : user.userId);
+  }, [loadDrinksByUserId, usersDrinks]);
 
   const currentListing = usersDrinks.map((drinks: any) => (
     <IonItem
       key={drinks.idDrink}
       button
-      routerLink={"/drinkdetails" + drinks.path}
+      routerLink={"/favedDrinkdetails" + drinks.path}
       onClick={() => {
         loadDrinkById(dispatch, drinks.idDrink);
       }}

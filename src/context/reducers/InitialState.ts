@@ -1,7 +1,7 @@
 export default {
   drinks: [],
   usersDrinks: [],
-  user: { username: "", password: "" },
+  user: { userId: 6, email: "", password: "" },
   selectedDrink: {
     idDrink: 11410,
     strDrink: "Gin Fizz",
@@ -14,4 +14,5 @@ export default {
     measures: ["2 oz ", "Juice of 1/2 ", "1 tsp "],
     path: "/11410",
   },
+  selectedIngredient: "Gin",
 };

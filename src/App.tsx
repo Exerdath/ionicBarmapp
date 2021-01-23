@@ -8,6 +8,7 @@ import {
   IonList,
   IonItem,
   IonLabel,
+  IonMenuToggle,
 } from "@ionic/react";
 import { IonReactRouter } from "@ionic/react-router";
 import Home from "./pages/Home";
@@ -33,47 +34,99 @@ import "./theme/variables.css";
 
 /* Pages*/
 import About from "./pages/info/About";
-import Contact from "./pages/info/Contact";
 import Login from "./pages/account/Login";
-import Register from "./pages/account/Register";
 import DrinkDetails from "./pages/DrinkDetails";
 import FavedDrinks from "./pages/FavedDrinks";
+import FavedDrinksDetails from "./pages/FavedDrinkDetails";
 
-const App: React.FC = () => (
-  <IonApp>
-    <IonMenu side="start" menuId="barMenu" contentId="main">
-      <IonContent>
-        <IonList>
-          <IonItem button routerLink="/home">
-            <IonLabel class="ion-text-center">
-              <strong>Barmapp</strong>
-            </IonLabel>
-          </IonItem>
-          <IonItem button routerLink="/favedDrinks">
-            <IonLabel class="ion-text-center">Faved Drinks</IonLabel>
-          </IonItem>
-          <IonItem button routerLink="/about">
-            <IonLabel class="ion-text-center">ABOUT</IonLabel>
-          </IonItem>
-          <IonItem button routerLink="/contact">
-            <IonLabel class="ion-text-center">CONTACT</IonLabel>
-          </IonItem>
-        </IonList>
-      </IonContent>
-    </IonMenu>
-    <IonReactRouter>
-      <IonRouterOutlet id="main">
-        <Route path="/home" component={Home} exact={true} />
-        <Route path="/contact" component={Contact} exact={true} />
-        <Route path="/about" component={About} exact={true} />
-        <Route path="/login" component={Login} exact={true} />
-        <Route path="/register" component={Register} exact={true} />
-        <Route path="/favedDrinks" component={FavedDrinks} exact={true} />
-        <Route path="/drinkdetails/:id" component={DrinkDetails} exact={true} />
-        <Route exact path="/" render={() => <Redirect to="/home" />} />
-      </IonRouterOutlet>
-    </IonReactRouter>
-  </IonApp>
-);
+//Context
+import { useDrinksContext } from "./context/wrappers/DrinksWrapper";
+
+const App: React.FC = () => {
+  const { user } = useDrinksContext();
+  return (
+    <IonApp>
+      {user.userId === 6 ? (
+        <IonReactRouter>
+          <IonMenu side="start" menuId="barMenu" contentId="main">
+            <IonContent>
+              <IonList>
+                <IonItem button routerLink={"/home"}>
+                  <IonLabel class="ion-text-center">
+                    <strong>Barmapp</strong>
+                  </IonLabel>
+                </IonItem>
+                <IonItem button routerLink={"/favedDrinks"}>
+                  <IonLabel class="ion-text-center">Faved Drinks</IonLabel>
+                </IonItem>
+                <IonItem button routerLink={"/about"}>
+                  <IonLabel class="ion-text-center">ABOUT</IonLabel>
+                </IonItem>
+              </IonList>
+            </IonContent>
+          </IonMenu>
+          <IonRouterOutlet id="main">
+            <Route path="/login" component={Login} exact={true} />
+            <Route path="/home" render={() => <Redirect to="/login" />} />
+            <Route path="/about" render={() => <Redirect to="/login" />} />
+            <Route
+              path="/favedDrinks"
+              render={() => <Redirect to="/login" />}
+            />
+            <Route exact path="/" render={() => <Redirect to="/login" />} />
+          </IonRouterOutlet>
+        </IonReactRouter>
+      ) : (
+        <IonReactRouter>
+          <IonMenu side="start" menuId="barMenu" contentId="main">
+            <IonContent>
+              <IonList>
+                <IonItem button routerLink={"/home"}>
+                  <IonMenuToggle>
+                    <IonLabel class="ion-text-center">
+                      <strong>Barmapp</strong>
+                    </IonLabel>
+                  </IonMenuToggle>
+                </IonItem>
+                <IonItem button routerLink={"/favedDrinks"}>
+                  <IonMenuToggle>
+                    <IonLabel class="ion-text-center">Faved Drinks</IonLabel>
+                  </IonMenuToggle>
+                </IonItem>
+                <IonItem button routerLink={"/about"}>
+                  <IonMenuToggle>
+                    <IonLabel class="ion-text-center">ABOUT</IonLabel>
+                  </IonMenuToggle>
+                </IonItem>
+                <IonItem button routerLink={"/login"}>
+                  <IonMenuToggle>
+                    <IonLabel class="ion-text-center">LOGOUT</IonLabel>
+                  </IonMenuToggle>
+                </IonItem>
+              </IonList>
+            </IonContent>
+          </IonMenu>
+          <IonRouterOutlet id="main">
+            <Route path="/home" component={Home} exact={true} />
+            <Route path="/about" component={About} exact={true} />
+            <Route path="/login" component={Login} exact={true} />
+            <Route path="/favedDrinks" component={FavedDrinks} exact={true} />
+            <Route
+              path="/drinkdetails/:id"
+              component={DrinkDetails}
+              exact={true}
+            />
+            <Route
+              path="/favedDrinkdetails/:id"
+              component={FavedDrinksDetails}
+              exact={true}
+            />
+            <Route exact path="/" render={() => <Redirect to="/home" />} />
+          </IonRouterOutlet>
+        </IonReactRouter>
+      )}
+    </IonApp>
+  );
+};
 
 export default App;

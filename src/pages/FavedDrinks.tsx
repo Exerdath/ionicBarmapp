@@ -1,14 +1,11 @@
 import {
   IonContent,
   IonHeader,
-  IonItem,
   IonPage,
-  IonSelect,
-  IonSelectOption,
   IonTitle,
   IonToolbar,
 } from "@ionic/react";
-import React, { useState } from "react";
+import React from "react";
 import BarHeader from "../components/common/BarHeader";
 import "./Home.css";
 import FavedDrinksList from "../components/FavedDrinksList";

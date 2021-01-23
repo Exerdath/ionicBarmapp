@@ -1,5 +1,5 @@
 import { IonContent, IonList, IonItem, IonLabel } from "@ionic/react";
-import React, { useState } from "react";
+import React from "react";
 import { useDrinksContext } from "../context/wrappers/DrinksWrapper";
 
 const DrinksList: React.FC = () => {
