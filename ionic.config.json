@@ -1,0 +1,7 @@
+{
+  "name": "barman",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "react"
+}
